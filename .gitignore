@@ -333,3 +333,6 @@ chaac/media/
 .ipython/
 .env
 .envs/*
+
+# pycharm stuff
+#.idea/
