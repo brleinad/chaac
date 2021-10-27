@@ -304,3 +304,5 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+OPEN_WEATHER_KEY = env("OPEN_WEATHER_KEY")
