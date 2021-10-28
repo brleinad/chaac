@@ -305,4 +305,4 @@ CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
 
-OPEN_WEATHER_KEY = env("OPEN_WEATHER_KEY")
+OPEN_WEATHER_MAP_KEY = env("OPEN_WEATHER_MAP_KEY")
