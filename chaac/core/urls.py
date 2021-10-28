@@ -1,5 +1,8 @@
 from django.urls import path
 
-from chaac.core.views import WeatherForecastView
+from chaac.core.views import FindLocationView, WeatherForecastPlannerView
 
-urlpatterns = [path("", WeatherForecastView.as_view(), name="chaac")]
+urlpatterns = [
+    path("find/", FindLocationView.as_view(), name="find"),
+    path("", WeatherForecastPlannerView.as_view(), name="chaac"),
+]
