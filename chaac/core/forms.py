@@ -11,12 +11,12 @@ class FindLocationForm(forms.ModelForm):
         model = Location
         fields = ["name"]
 
-    # def clean(self):
-    #     location_name = self.cleaned_data['name']
-    #     response = open_weather_map_api.find_location(location_name)
-    #     found_locations = response.json()
-    #     print(found_locations)
-
     def save(self, commit=True):
         # super().save()
         pass  # Don't save the model
+
+
+class AddLocationForm(forms.ModelForm):
+    class Meta:
+        model = Location
+        fields = ["name", "country_code", "plan"]

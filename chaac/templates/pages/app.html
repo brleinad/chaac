@@ -1,6 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-  Hello
 
+  <form action="/find/" method="post"> {% csrf_token %}
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+  </form>
+
+  <form action="/add/" method="post">
+    {% csrf_token %}
+    <ul>
+      {% for location in found_locations %}
+        <li>
+          <input type="hidden" name="name" id="id_name" value="{{ location.name }}">
+          <input type="hidden" name="country_code" id="id_country_code" value="{{ location.country }}">
+          {{ location.name }} - {{ location.country }}
+          <input type="submit" value="+">
+        </li>
+      {% endfor %}
+    </ul>
+  </form>
+
+  <table>
+  <tbody>
+  {% for location in saved_locations %}
+  <tr>
+    <td>
+      {{  location.name }}
+    </td>
+    <td>
+      {{ location.country_code }}
+    </td>
+  </tr>
+  {%  endfor %}
+  </tbody>
+  </table>
 {% endblock %}
