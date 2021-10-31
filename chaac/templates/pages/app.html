@@ -8,19 +8,19 @@
     <input type="submit" value="Submit">
   </form>
 
-  <form action="/add/" method="post">
-    {% csrf_token %}
     <ul>
       {% for location in found_locations %}
         <li>
-          <input type="hidden" name="name" id="id_name" value="{{ location.name }}">
-          <input type="hidden" name="country_code" id="id_country_code" value="{{ location.country }}">
-          {{ location.name }} - {{ location.country }}
-          <input type="submit" value="+">
+          <form action="/add/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="name" id="id_name" value="{{ location.name }}">
+            <input type="hidden" name="country_code" id="id_country_code" value="{{ location.country }}">
+            {{ location.name }} - {{ location.country }}
+            <input type="submit" value="+">
+          </form>
         </li>
       {% endfor %}
     </ul>
-  </form>
 
   <table>
   <tbody>
