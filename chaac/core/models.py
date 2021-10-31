@@ -9,4 +9,5 @@ class WeatherForecastPlan(models.Model):
 
 class Location(models.Model):
     name = models.CharField(max_length=128)
+    country_code = models.CharField(max_length=2)
     plan = models.ForeignKey(WeatherForecastPlan, on_delete=models.CASCADE)
