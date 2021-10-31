@@ -8,13 +8,13 @@
     <input type="submit" value="Submit">
   </form>
 
-{#  <ul>#}
-{#  {% for location in found_locations %}#}
-{#    <li>#}
-{#    {{ location }}#}
-{#    </li>#}
-{#  {% endfor %}#}
-{#  </ul>#}
+  <ul>
+  {% for location in found_locations %}
+    <li>
+    {{ location.name }} - {{ location.country }}
+    </li>
+  {% endfor %}
+  </ul>
 
 
 {% endblock %}

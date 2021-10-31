@@ -16,12 +16,17 @@ class FindLocationView(FormView):
         location_name = form.cleaned_data["name"]
         response = open_weather_map_api.find_location(location_name)
         found_locations = response.json()
-        print(found_locations)
+        self.request.session["found_locations"] = found_locations
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context[found_locations] =
+        context["found_locations"] = self.request.session.get("found_locations")
+        self.request.session["found_locations"] = []
         return context
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
 
 class WeatherForecastPlannerView(TemplateView):
