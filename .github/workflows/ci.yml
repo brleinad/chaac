@@ -19,6 +19,26 @@ jobs:
   linter:
     runs-on: ubuntu-latest
     steps:
+      - name: Create env file
+        run: |
+          mkdir -p .envs/.local
+          touch .envs/.local/.django
+          touch .envs/.local/.postgres
+          cat << EOF > .envs/.local/.postgres
+          POSTGRES_HOST="postgres"
+          POSTGRES_PORT="5432"
+          POSTGRES_DB="chaac"
+          POSTGRES_USER="githubactionspostgressuser"
+          POSTGRES_PASSWORD="githubactionspostgrespassword"
+          EOF
+          cat << EOF > .envs/.local/.django
+          USE_DOCKER="yes"
+          IPYTHONDIR="/app/.ipython"
+          REDIS_URL="redis://redis:6379/0"
+          CELERY_FLOWER_USER="githubactionsceleryfloweruser"
+          CELERY_FLOWER_PASSWORD="githubactionsceleryflowerpassword"
+          OPEN_WEATHER_MAP_KEY=${{ secrets.OPEN_WEATHER_MAP_KEY }}
+          EOF
 
       - name: Checkout Code Repository
         uses: actions/checkout@v2
@@ -31,7 +51,7 @@ jobs:
       # Run all pre-commit hooks on all the files.
       # Getting only staged files can be tricky in case a new PR is opened
       # since the action is run on a branch in detached head state
-      - name: Install and Run Pre-commit 
+      - name: Install and Run Pre-commit
         uses: pre-commit/action@v2.0.0
 
   # With no caching at all the entire ci process takes 4m 30s to complete!
