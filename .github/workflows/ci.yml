@@ -7,17 +7,36 @@ env:
 
 on:
   pull_request:
-    branches: [ "master", "main" ]
+    branches: [ "main" ]
     paths-ignore: [ "docs/**" ]
 
   push:
-    branches: [ "master", "main" ]
+    branches: [ "main" ]
     paths-ignore: [ "docs/**" ]
 
 
 jobs:
   linter:
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      # Run all pre-commit hooks on all the files.
+      # Getting only staged files can be tricky in case a new PR is opened
+      # since the action is run on a branch in detached head state
+      - name: Install and Run Pre-commit
+        uses: pre-commit/action@v2.0.0
+
+  # With no caching at all the entire ci process takes 4m 30s to complete!
+  pytest:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Create env file
         run: |
@@ -39,26 +58,6 @@ jobs:
           CELERY_FLOWER_PASSWORD="githubactionsceleryflowerpassword"
           OPEN_WEATHER_MAP_KEY=${{ secrets.OPEN_WEATHER_MAP_KEY }}
           EOF
-
-      - name: Checkout Code Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-
-      # Run all pre-commit hooks on all the files.
-      # Getting only staged files can be tricky in case a new PR is opened
-      # since the action is run on a branch in detached head state
-      - name: Install and Run Pre-commit
-        uses: pre-commit/action@v2.0.0
-
-  # With no caching at all the entire ci process takes 4m 30s to complete!
-  pytest:
-    runs-on: ubuntu-latest
-
-    steps:
 
       - name: Checkout Code Repository
         uses: actions/checkout@v2
