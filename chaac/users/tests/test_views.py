@@ -11,11 +11,7 @@ from django.urls import reverse
 from chaac.users.forms import UserChangeForm
 from chaac.users.models import User
 from chaac.users.tests.factories import UserFactory
-from chaac.users.views import (
-    UserRedirectView,
-    UserUpdateView,
-    user_detail_view,
-)
+from chaac.users.views import UserRedirectView, UserUpdateView, user_detail_view
 
 pytestmark = pytest.mark.django_db
 
