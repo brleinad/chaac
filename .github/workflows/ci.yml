@@ -40,17 +40,17 @@ jobs:
     steps:
       - name: Create env file
         run: |
-          mkdir -p .envs/.local
-          touch .envs/.local/.django
-          touch .envs/.local/.postgres
-          cat << EOF > .envs/.local/.postgres
+          mkdir -p ./.envs/.local
+          touch ./.envs/.local/.django
+          touch ./.envs/.local/.postgres
+          cat << EOF > ./.envs/.local/.postgres
           POSTGRES_HOST="postgres"
           POSTGRES_PORT="5432"
           POSTGRES_DB="chaac"
           POSTGRES_USER="githubactionspostgressuser"
           POSTGRES_PASSWORD="githubactionspostgrespassword"
           EOF
-          cat << EOF > .envs/.local/.django
+          cat << EOF > ./.envs/.local/.django
           USE_DOCKER="yes"
           IPYTHONDIR="/app/.ipython"
           REDIS_URL="redis://redis:6379/0"
@@ -58,6 +58,9 @@ jobs:
           CELERY_FLOWER_PASSWORD="githubactionsceleryflowerpassword"
           OPEN_WEATHER_MAP_KEY=${{ secrets.OPEN_WEATHER_MAP_KEY }}
           EOF
+          cat ./.envs/.local/.django
+          cat ./.envs/.local/.postgres
+          pwd
 
       - name: Checkout Code Repository
         uses: actions/checkout@v2
