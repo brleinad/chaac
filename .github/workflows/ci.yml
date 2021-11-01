@@ -38,6 +38,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v2
+
       - name: Create env file
         run: |
           mkdir -p ./.envs/.local
@@ -58,12 +61,6 @@ jobs:
           CELERY_FLOWER_PASSWORD="githubactionsceleryflowerpassword"
           OPEN_WEATHER_MAP_KEY=${{ secrets.OPEN_WEATHER_MAP_KEY }}
           EOF
-          cat ./.envs/.local/.django
-          cat ./.envs/.local/.postgres
-          pwd
-
-      - name: Checkout Code Repository
-        uses: actions/checkout@v2
 
       - name: Build the Stack
         run:  docker-compose -f local.yml build
