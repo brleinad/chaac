@@ -6,14 +6,14 @@ class OpenWeatherMapApi:
 
     BASE_URL = "http://api.openweathermap.org"
 
-    def get_weather_forecast(self, city, state, country, units):
-        days = 5  # hardcoded for now
+    def get_weather_forecast(self, location, units="metric"):
         endpoint = (
-            f"{self.BASE_URL}/data/2.5/forecast/daily?q={city},{state},{country}"
-            f"&cnt={days}&units={units}&appid={settings.OPEN_WEATHER_MAP_KEY}"
+            f"{self.BASE_URL}/data/2.5/onecall?lat={location.latitude}&lon={location.longitude}"
+            f"&exclude=minutely,hourly"
+            f"&units={units}&appid={settings.OPEN_WEATHER_MAP_KEY}"
         )
         response = requests.get(endpoint)
-        print(f"OPEN WEATHER response: {response.text}")
+        # print(f"OPEN WEATHER response: {response.text}")
         return response
 
     def find_location(self, location_name):
