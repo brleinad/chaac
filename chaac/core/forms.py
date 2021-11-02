@@ -14,9 +14,3 @@ class FindLocationForm(forms.ModelForm):
     def save(self, commit=True):
         # super().save()
         pass  # Don't save the model
-
-
-class AddLocationForm(forms.ModelForm):
-    class Meta:
-        model = Location
-        fields = ["name", "country_code", "plan"]
