@@ -1,3 +1,5 @@
+import datetime
+
 from django.views.generic import CreateView, FormView
 
 from chaac.core.forms import FindLocationForm
@@ -67,25 +69,36 @@ class WeatherForecastPlannerView(FormView):
                 {
                     "name": location.name,
                     "country": location.country_code,
-                    # 'weather:': self.get_weather_for_location(location)
+                    "weather": self.get_weather_for_location(location),
                 }
             )
 
-        context["locations"] = locations
+        context["saved_locations"] = locations
+        dates = []
+        dates = [day.get("date") for day in locations[0].get("weather")]
+        context["dates"] = dates
+
+        print("locations: ", locations)
 
         return context
 
     def get_weather_for_location(self, location):
-        response = open_weather_map_api.get_weather_forecast(
-            city=location.name, country=location.country_code
-        )
-        print("weather response: ", response)
-        forecast = response.list
-        return {
-            "day0": {
-                "day_temp": forecast[0].temp.day,
-                "humidity": forecast[0].humidity,
-                "conditions": forecast[0].weather[0].description,
-                "icon": forecast[0].weather[0].icon,
-            }
-        }
+        response = open_weather_map_api.get_weather_forecast(location)
+        forecasts = response.json().get("daily")
+
+        day = 0
+        weather = []
+        for forecast in forecasts:
+            weather.append(
+                {
+                    "date": datetime.datetime.fromtimestamp(forecast.get("dt")),
+                    "day_temp": forecast.get("temp").get("day"),
+                    "min_temp": forecast.get("temp").get("min"),
+                    "max_temp": forecast.get("temp").get("max"),
+                    "humidity": forecast.get("humidity"),
+                    "conditions": forecast.get("weather")[0].get("description"),
+                    "icon": forecast.get("weather")[0].get("icon"),
+                }
+            )
+            day += 1
+        return weather
