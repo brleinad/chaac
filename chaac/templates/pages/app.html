@@ -15,6 +15,8 @@
             {% csrf_token %}
             <input type="hidden" name="name" id="id_name" value="{{ location.name }}">
             <input type="hidden" name="country_code" id="id_country_code" value="{{ location.country }}">
+            <input type="hidden" name="latitude" id="id_latitude" value="{{ location.lat }}">
+            <input type="hidden" name="longitude" id="id_longitude" value="{{ location.lon }}">
             {{ location.name }} - {{ location.country }}
             <input type="submit" value="+">
           </form>
@@ -24,13 +26,15 @@
 
   <table>
   <tbody>
-  {% for location in saved_locations %}
+  {% for location in locations %}
   <tr>
     <td>
       {{  location.name }}
     </td>
     <td>
-      {{ location.country_code }}
+      {{ location.country }}
+    </td>
+    <td>
     </td>
   </tr>
   {%  endfor %}

@@ -24,7 +24,7 @@ class AddLocationView(CreateView):
     template_name = "pages/app.html"
     # form_class = AddLocationForm
     model = Location
-    fields = ["name", "country_code", "plan"]
+    fields = ["name", "country_code", "plan", "longitude", "latitude"]
     success_url = "/"
 
     def get_form_kwargs(self):
@@ -59,7 +59,33 @@ class WeatherForecastPlannerView(FormView):
         self.request.session["found_locations"] = []  # reset for next search
 
         plan_id = self.request.session.get("plan_id")
-        context["saved_locations"] = Location.objects.filter(plan_id=plan_id)
-        print("saved:  ", context["saved_locations"])
+        saved_locations = Location.objects.filter(plan_id=plan_id)
+
+        locations = []
+        for location in saved_locations:
+            locations.append(
+                {
+                    "name": location.name,
+                    "country": location.country_code,
+                    # 'weather:': self.get_weather_for_location(location)
+                }
+            )
+
+        context["locations"] = locations
 
         return context
+
+    def get_weather_for_location(self, location):
+        response = open_weather_map_api.get_weather_forecast(
+            city=location.name, country=location.country_code
+        )
+        print("weather response: ", response)
+        forecast = response.list
+        return {
+            "day0": {
+                "day_temp": forecast[0].temp.day,
+                "humidity": forecast[0].humidity,
+                "conditions": forecast[0].weather[0].description,
+                "icon": forecast[0].weather[0].icon,
+            }
+        }
